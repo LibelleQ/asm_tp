@@ -26,26 +26,26 @@ _start:
 
 _check2:
 	mov al,[buffer]
-	mov al, '4'
+	cmp al, '4'
 	jne _exit_fail
 	mov al, [buffer+1]
-	mov al, '2'
+	cmp al, '2'
 	jne _exit_fail
 
 _check3:
 	mov al, [buffer]
-	mov al, '4'
+	cmp al, '4'
 	jne _exit_fail
 	mov al, [buffer+1]
-	mov al, '2'
+	cmp al, '2'
 	jne _exit_fail
 	cmp byte [buffer+2],10
 	jne _exit_fail
 	jmp sucess
 
 sucess:
-	mov rax, 0
-	mov rdi, 0
+	mov rax, 1
+	mov rdi, 1
 	mov rsi, msg
 	mov rdx, msglen
 	syscall

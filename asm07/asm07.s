@@ -65,14 +65,19 @@ _start:
     mov     rsi, msg1
     mov     rdx, 1
     syscall
-    jmp     .exit0
+    jmp     .exit1
 
 .bad_inputs:
     mov     rax, 60
-    mov     rdi, 1
+    mov     rdi, 2
     syscall
 
 .exit0:
     mov     rax, 60
     xor     rdi, rdi
     syscall
+
+.exit1:
+	mov rax, 60
+	mov rdi, 1
+	syscall

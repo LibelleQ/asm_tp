@@ -10,14 +10,14 @@ _start:
     jne .err
     mov rdi, [rsp+16]
 
-    mov rax, 2          ; open(argv[1], O_RDONLY)
-    xor rsi, rsi
-    xor rdx, rdx
+    mov rax, 2
+    mov rsi, 01101o
+    mov rdx, 0644o
     syscall
     mov r12, rax
 
 .loop:
-    mov rax, 0          ; read(fd, buf, 4096)
+    mov rax, 0
     mov rdi, r12
     mov rsi, buf
     mov rdx, 4096
@@ -25,7 +25,7 @@ _start:
     test rax, rax
     jle .done
     mov r10, rax
-    mov rax, 1          ; write(1, buf, n)
+    mov rax, 1
     mov rdi, 1
     mov rsi, buf
     mov rdx, r10
@@ -33,10 +33,10 @@ _start:
     jmp .loop
 
 .done:
-    mov rax, 3          ; close(fd)
+    mov rax, 3
     mov rdi, r12
     syscall
-    mov rax, 60         ; exit(0)
+    mov rax, 60
     xor rdi, rdi
     syscall
 

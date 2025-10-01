@@ -4,12 +4,15 @@ section .text
 	global _start
 
 _start:
+	mov rax, [rsp]
 
-	mov rbx, [rsp]
+	cmp rax, 1
+	je .no_args
+
 	mov rsi, [rsp+16]
-
 	mov rdi, rsi
 	xor rcx, rcx
+
 .len_loop:
 	cmp byte [rdi+rcx], 0
 	je .got_len
@@ -31,4 +34,9 @@ _start:
 
 	mov rax, 60
 	xor rdi, rdi
+	syscall
+
+.no_args:
+	mov rax, 60
+	mov rdi, 1
 	syscall

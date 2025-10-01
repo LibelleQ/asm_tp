@@ -111,7 +111,9 @@ print_even:
     mov     rsi, msg_even
     mov     rdx, msg_even_len
     syscall
-    jmp     exit_ok
+    mov     rax, 60
+    xor     rdi, rdi
+    syscall
 
 print_odd:
     mov     rax, 1
@@ -119,7 +121,9 @@ print_odd:
     mov     rsi, msg_odd
     mov     rdx, msg_odd_len
     syscall
-    jmp     exit_ok
+    mov     rax, 60
+    mov     rdi, 1
+    syscall
 
 no_digit:
     jmp     exit_fail1
@@ -132,9 +136,4 @@ exit_fail1:
 exit_fail2:
     mov     rax, 60
     mov     rdi, 2
-    syscall
-
-exit_ok:
-    mov     rax, 60
-    xor     rdi, rdi
     syscall

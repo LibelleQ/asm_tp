@@ -4,9 +4,6 @@ default rel
 section .bss
 buf:    resb 32
 
-section .data
-nl:     db 10
-
 section .text
 global _start
 
@@ -14,11 +11,10 @@ _start:
     mov rbx, rsp
     mov rax, [rbx]
     cmp rax, 2
-    jl .fail
+    jl .exit0
     mov rsi, [rbx+16]        ; argv[1]
 
-    ; parse unsigned decimal -> RDI = N
-    xor rdi, rdi
+    xor rdi, rdi             ; N
 .pd:
     mov al, [rsi]
     cmp al, '0'
@@ -31,21 +27,20 @@ _start:
     inc rsi
     jmp .pd
 .got:
-    ; S = N*(N-1)/2, en évitant l’overflow
-    mov rax, rdi         ; rax = N
+    mov rax, rdi
     test rax, rax
     jz .print_zero
-    mov rbx, rax         ; rbx = N
-    dec rbx              ; rbx = N-1
+    mov rbx, rax
+    dec rbx
     test rax, 1
     jz .evenN
-    shr rbx, 1           ; (N-1)/2
+    shr rbx, 1
     jmp .mul
 .evenN:
-    shr rax, 1           ; N/2
+    shr rax, 1
 .mul:
-    mul rbx              ; RAX = (N/2)*(N-1)  ou  ((N-1)/2)*N
-    ; print RAX (unsigned)
+    mul rbx                   ; RAX = N*(N-1)/2
+
     mov rcx, buf
     add rcx, 32
     test rax, rax
@@ -72,11 +67,7 @@ _start:
     mov rax, 1
     mov rdi, 1
     syscall
-    mov rax, 1
-    mov rdi, 1
-    mov rsi, nl
-    mov rdx, 1
-    syscall
+.exit0:
     mov eax, 60
     xor edi, edi
     syscall
@@ -84,14 +75,8 @@ _start:
 .print_zero:
     mov rax, 1
     mov rdi, 1
-    mov rsi, nl
+    mov rsi, buf
+    mov byte [rsi], '0'
     mov rdx, 1
     syscall
-    mov eax, 60
-    xor edi, edi
-    syscall
-
-.fail:
-    mov eax, 60
-    mov edi, 1
-    syscall
+    jmp .exit0

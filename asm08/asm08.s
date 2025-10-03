@@ -11,10 +11,10 @@ _start:
     mov rbx, rsp
     mov rax, [rbx]
     cmp rax, 2
-    jl .exit0
-    mov rsi, [rbx+16]        ; argv[1]
+    jl .exit1
+    mov rsi, [rbx+16]
 
-    xor rdi, rdi             ; N
+    xor rdi, rdi
 .pd:
     mov al, [rsi]
     cmp al, '0'
@@ -39,7 +39,7 @@ _start:
 .evenN:
     shr rax, 1
 .mul:
-    mul rbx                   ; RAX = N*(N-1)/2
+    mul rbx
 
     mov rcx, buf
     add rcx, 32
@@ -69,7 +69,7 @@ _start:
     syscall
 .exit0:
     mov eax, 60
-    mov rdi, 1
+    xor edi, edi
     syscall
 
 .print_zero:
@@ -80,3 +80,8 @@ _start:
     mov rdx, 1
     syscall
     jmp .exit0
+
+.exit1:
+    mov eax, 60
+    mov edi, 1
+    syscall

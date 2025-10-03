@@ -69,7 +69,7 @@ _start:
     syscall
 .exit0:
     mov eax, 60
-    xor edi, edi
+    mov rdi, 1
     syscall
 
 .print_zero:
